@@ -39,5 +39,5 @@ For this program, I have included 8 functions (listed below) to transform data, 
   <img width="577" alt="Test" src="https://user-images.githubusercontent.com/56757171/208152420-4840dead-c5b2-446a-8b02-825167368b4e.png">
 
   * **predictLabel(model, test_images, index):** A function that prints the top 3 most likely labels for the image at the given index, along with their probabilities.
-  <img width="750" alt="PredictLabels" src="https://user-images.githubusercontent.com/56757171/208151557-bbb83c9d-9454-4495-b871-32c0a6bfadb6.png">
+  <img width="1024" alt="predictLabels" src="https://user-images.githubusercontent.com/56757171/208154901-3569306b-8833-4458-a139-d09e2fac6edf.png">
 
