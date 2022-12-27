@@ -35,7 +35,7 @@ For this program, I have included 8 functions (listed below) to transform data, 
   * **trainModel(model, train_loader, criterion, epoch):** A function to train the neural network, print the model's accuracy per epoch, and print the model's accumulated loss (epoch loss/length of the dataset) per epoch.
   <img width="581" alt="Tranning" src="https://user-images.githubusercontent.com/56757171/208152405-0d0701b3-fe94-4906-ba41-a98f45b050ab.png">
 
-  * **evaluateModel(model, test_loader, criterion):** A function that prints the model's average loss (if the show_loss argument is true), and the model's accuracy on the testing data set.
+  * **evaluateModel(model, test_loader, criterion):** A function that prints the model's accuracy and average loss on the testing data set.
   <img width="577" alt="Test" src="https://user-images.githubusercontent.com/56757171/208152420-4840dead-c5b2-446a-8b02-825167368b4e.png">
 
   * **predictLabel(model, test_images, index):** A function that prints the top 3 most likely labels for the image at the given index, along with their probabilities.
