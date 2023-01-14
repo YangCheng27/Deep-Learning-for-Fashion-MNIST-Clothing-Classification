@@ -21,7 +21,7 @@ Each training and test example is assigned to one of the following labels:
 | 9    | Ankle boot   | 
 
 ## Build Neural Network Using Pytorch 
-For this program, I have included 8 functions (listed below) to transform data, build a neural network, train the network, evaluate its performance, and make preditions on test data.
+For this program, I have included 8 functions (listed below) to transform data, build a neural network, train the network, evaluate its performance, and make predictions on test data.
   * **dataTransform():** Transform data from Fashion-MNIST dataset.
   * **getDataImageSamples():** Display dataset image samples
   <img width="1281" alt="getDataImageSamples" src="https://user-images.githubusercontent.com/56757171/207085495-73faba25-f59d-48ed-9095-75cde8612d34.png">
