@@ -68,7 +68,6 @@ def getDataImageSamples():
     print()
 
 
-    
 # Create training data set
 def getTrainingDataLoader():
 
@@ -79,6 +78,7 @@ def getTrainingDataLoader():
         transform=dataTransform())
 
     return torch.utils.data.DataLoader(train_set, batch_size = 16)
+
 
 # Create test data set
 def getTestDataLoader():
@@ -111,14 +111,14 @@ def buildModel():
     return model
 
 
-
 # Train the neural network model
-def trainModel(model, train_loader, criterion, epoch):
+def trainModel(model, train_loader, criterion, training_epoch, writer):
 
     model.train()
     opt = optim.SGD(model.parameters(), lr = 0.001, momentum = 0.9)
+    #opt = optim.Adam(model.parameters(), lr = 0.001)
 
-    for epoch in range(epoch):
+    for epoch in range(training_epoch):
 
         running_loss = 0.0
         correct = 0
@@ -143,11 +143,16 @@ def trainModel(model, train_loader, criterion, epoch):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-        print('Train Accuracy ('+ str(epoch) + '):',#str(correct)+'/'+str(total)+
-              f'{100*correct/total:.2f}%',
-              f' Loss: {running_loss*0.001:.3f}')
-    
+            writer.add_scalar("Loss/train", loss.item(), epoch * len(train_loader) + i)
 
+        #print('Train Accuracy ('+ str(epoch) + '):',#str(correct)+'/'+str(total)+
+        #      f'{100*correct/total:.2f}%',
+        #      f' Loss: {running_loss*0.001:.3f}')
+                # Log accuracy for each epoch
+        accuracy = 100 * correct / total
+        writer.add_scalar('Accuracy/train', accuracy, epoch)
+        print(f'Epoch [{epoch + 1}/{training_epoch}], Loss: {running_loss / total:.4f}, Accuracy: {accuracy:.2f}%')
+    
 
 """
     INPUT: 
@@ -158,7 +163,7 @@ def trainModel(model, train_loader, criterion, epoch):
     RETURNS:
         None
 """
-def evaluateModel(model, test_loader, criterion):
+def evaluateModel(model, test_loader, criterion, writer = None):
     
     model.eval()
     running_loss = 0.0
@@ -177,7 +182,11 @@ def evaluateModel(model, test_loader, criterion):
 
     loss = running_loss / total
     accuracy = 100 * correct / total
-    
+
+    if writer:
+        writer.add_scalar('Loss/test', loss)
+        writer.add_scalar('Accuracy/test', accuracy)
+
     print('Test Accuracy :', #str(correct) + '/' + str(total) + 
           f'{accuracy:.2f}%',
           f' Loss: {loss:.4f}')
@@ -193,8 +202,7 @@ def evaluateModel(model, test_loader, criterion):
 
     RETURNS:
         None
-"""
-    
+"""  
 def predictLabel(model, test_images, index):
     
     logits = model(test_images[index])
@@ -223,40 +231,3 @@ def predictLabel(model, test_images, index):
         p = top3_prob[0][i].item()
         
         print(class_names[c] + ":", f'{p:.2f}%')
-
-
-
-if __name__ == '__main__':
-
-    
-    criterion = nn.CrossEntropyLoss()
-    train_loader = getTrainingDataLoader()
-    print(type(train_loader))
-    print(train_loader.dataset)
-    
-    print()
-    getDataImageSamples()
-    
-    test_loader = getTestDataLoader()  
-    model = buildModel()
-    
-    print('\n-------------<Build Nueral Network Model>-------------\n')
-    print(model)
-    
-    print('\n-------------<Train Neural Network Model>-------------\n')
-    trainModel(model, train_loader, criterion, epoch = 10)
-    
-    print('\n---------------<Evaluate Newwork Model>---------------\n')
-
-    evaluateModel(model, test_loader, criterion)
-    print('\n-----------------<Predict the Labels>-----------------\n')
-    pred_set, _ = next(iter(test_loader))
-    predictLabel(model, pred_set, 1)
-    predictLabel(model, pred_set, 2)
-    predictLabel(model, pred_set, 3)
-    predictLabel(model, pred_set, 4)
-    predictLabel(model, pred_set, 5)
-    predictLabel(model, pred_set, 6)
-    predictLabel(model, pred_set, 7)
-    predictLabel(model, pred_set, 8)
-    predictLabel(model, pred_set, 9)
